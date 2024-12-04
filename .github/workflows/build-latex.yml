@@ -7,10 +7,10 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install LaTeX dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-latex-extra
+          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-latex-extra latexmk
 
       - name: Compile LaTeX document using Makefile
         run: make
