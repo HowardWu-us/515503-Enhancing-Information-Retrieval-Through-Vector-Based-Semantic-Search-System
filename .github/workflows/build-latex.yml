@@ -6,14 +6,15 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: main.tex
-          
-          extra_fonts:
-            ./fonts/*.otf
-          latexmk_use_xelatex: true
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-fonts-recommended texlive-latex-extra
+
+      - name: Compile LaTeX document using Makefile
+        run: make
+
       - name: Upload PDF file
         uses: actions/upload-artifact@v4
         with:
