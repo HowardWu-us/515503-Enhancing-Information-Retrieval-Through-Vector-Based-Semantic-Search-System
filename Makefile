@@ -11,4 +11,5 @@ $(OUTPUT): $(SOURCES)
 	$(PDFLATEX) $(SOURCES)
 
 clean:
-	rm -f *.aux *.log *.out *.pdf *.toc
+	rm -f *.aux *.log *.out *.pdf *.toc *.fls *.fdb_latexmk *.xdv
+	rm -rf output/
