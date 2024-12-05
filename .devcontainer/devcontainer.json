@@ -1,0 +1,14 @@
+{
+    "name": "LaTeX Environment",
+    "context": "..",
+    "dockerFile": "Dockerfile",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "mechatroner.ruby",
+        "James-Yu.latex-workshop"
+    ],
+    "postCreateCommand": "tex --version",
+    "forwardPorts": [5000]
+}
