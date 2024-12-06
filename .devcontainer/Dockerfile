@@ -1,8 +1,9 @@
-# 使用 Ubuntu 基礎映像
 FROM ubuntu:20.04
 
-# 安裝 LaTeX (TeX Live) 和其他常用工具
-RUN apt-get update && apt-get install -y \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y \
     texlive-full \
     texlive-latex-extra \
     texlive-fonts-recommended \
@@ -10,8 +11,8 @@ RUN apt-get update && apt-get install -y \
     biber \
     pandoc \
     git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+    curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # 設置工作目錄
 WORKDIR /workspace
