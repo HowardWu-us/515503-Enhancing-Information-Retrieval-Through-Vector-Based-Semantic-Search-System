@@ -2,7 +2,10 @@
     [
         \section{Materials and Methods}
     ]
-    \includegraphics[trim=2cm 2cm 1cm 3cm, clip, width=\columnwidth]{figures/word_vector_example.pdf}
-    \blindtext
-    \blindtext
+    \includegraphics[trim=2cm 2cm 1cm 3cm, clip, width=\linewidth]{figures/word_vector_example.pdf}
+    The project used Word2Vec to transform words into high-dimensional vectors, capturing semantic relationships between words. Unlike one-hot encoding, which creates sparse vectors, Word2Vec generates dense vectors where similar words have similar representations in vector space. The model was trained with a custom dataset using Skip-Gram and Continuous Bag of Words (CBOW) techniques to learn word embeddings.
+    To measure the similarity between vectors, cosine similarity was employed, which calculates the cosine of the angle between vectors.
+    Principal Component Analysis (PCA) was used to reduce the dimensionality of word vectors for a better visualization, helping to observe patterns and clusters of similar words.
+
+    \input{figures/cosine_similarity_example.tex}
 \end{multicols}

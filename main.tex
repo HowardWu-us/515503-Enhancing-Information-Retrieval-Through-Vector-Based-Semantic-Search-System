@@ -1,24 +1,42 @@
 \documentclass{article}
 \usepackage[margin=2cm, a4paper]{geometry}
 \usepackage{blindtext}
+\usepackage{ctex}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{tikz}
 \usepackage{multicol}
+\usepackage{titling}
 \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{float}
+
+\lstset{
+    breaklines=true,      % 自動換行
+    basicstyle=\ttfamily,  % 字型設定
+    columns=flexible,     % 可調整列寬
+    xleftmargin=0em,      % 左邊距
+    xrightmargin=2em      % 右邊距
+}
+
+
+\setlength{\droptitle}{-2cm}
 \title{Enhancing Information Retrieval Through Vector-Based Semantic Search System}
 \author{
-    Yu-Kai Su \\
-    Howard Wu \\
-    Li Cheuk Chung \\
-    Toshi Tsai
+    SU, YU-KAI \\
+    WU, HAO-WEI \\
+    TSAI, CHUN-CHE \\
+    CHOU, CHIN-SHUO \\
+    LI, CHEUK-CHUNG \\
 }
 \date{December 25, 2024}
 
 \begin{document}
 \maketitle
-
+\vspace{-1cm}
 
 \section{Abstract}
-All human things are subject to decay. And when fate summons, Monarchs must obey.
-
+This report explores the application of linear algebra to enhance information retrieval systems through a vector-based semantic search model. By leveraging the Word2Vec algorithm, which converts words into high-dimensional vectors, we aim to improve search engine accuracy by understanding word relationships beyond simple keyword matching. This project integrates vector search, semantic search, and word embeddings to address issues like imprecise queries, spelling errors, and limited vocabulary. The results highlight the improvements in search results accuracy, evaluated using the Mean Reciprocal Rank (MRR) metric.
 
 \input{sections/introduction.tex}
 
@@ -30,6 +48,7 @@ All human things are subject to decay. And when fate summons, Monarchs must obey
 
 \input{sections/conclusion.tex}
 
+\newpage
 \input{sections/reference.tex}
 
 \end{document}

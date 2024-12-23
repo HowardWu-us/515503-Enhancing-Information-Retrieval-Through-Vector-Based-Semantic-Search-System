@@ -1,5 +1,154 @@
-\begin{multicols}{2}
-    [
-    \section{References}
-    ]
-\end{multicols}
+\section{References}
+
+\appendix
+\section{Author Contributions}
+\dots
+
+
+
+\section{Test Cases}
+
+\begin{table}[H]
+    \begin{tabular}{ll}
+    \hline
+    Query     & Target                                    \\
+    NVIDIA 研替 & NVIDIA 2025 研發替代役/實習開放職缺資訊                \\
+    114甄試     & 114學年度碩士班甄試入學第2階段備取生名單及報到注意事項             \\
+    甄試名單      & 114學年度碩士班甄試入學第1階段                         \\
+    AI競賽      & AI Junior Award 2025                      \\
+    書卷獎       & 【學士班】112學年度第2學期書卷獎得獎名單公告                  \\
+    導師名單      & 113.10.15更新【學士班】113學年度第一學期大學部導生名單         \\
+    特殊選材      & 114學年度資訊工程學系特殊選才招生公告                      \\
+    畢業學分      & 【學士班】113學年度資工系學士班「畢業學分預審」作業公告(請於10/11前繳交) \\
+    校友 頒獎     & 資訊人院刊- 資訊系友【交大日資工系友回娘家暨傑出系友頒獎典禮】          \\
+    學士畢業      & 【學士班】資訊工程學系畢業離系/離校作業公告                   
+    \end{tabular}
+\end{table}
+
+\section{Code Implementation}
+
+\small
+\begin{lstlisting}
+import requests
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+from googletrans import Translator
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
+# Article class definition
+class Article:
+    def __init__(self, url: str, title: str) -> None:
+        self.article_url = url
+        self.original_title = title
+        self.translated_title = ""
+
+class ArticleCollection:
+    def __init__(self):
+        self.articles = []
+
+    def add_article(self, article: Article):
+        self.articles.append(article)
+
+    def display_titles(self):
+        for article in self.articles:
+            print(f"Original Title: {article.original_title}")
+            print(f"URL: {article.article_url}")
+            print("-" * 15)
+
+
+class ArticleCollectionFromUrl(ArticleCollection):
+    def __init__(self, urls=[]):
+        super().__init__()
+        self.urls = urls
+
+    def fetch_articles(self):
+        for url in tqdm(self.urls):
+            response = requests.get(url)
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, "html.parser")
+                for item in soup.find_all("li", class_="announcement-item"):
+                    link_tag = item.find("h2").find("a")
+                    title = link_tag.text.strip()
+                    href = link_tag["href"]
+                    self.add_article(Article(url=href, title=title))
+            else:
+                print(f"Unable to access site, status code: {response.status_code}")
+
+
+# Article translation function
+translator = Translator()
+
+def translate_articles(articles):
+    for article in tqdm(articles):
+        article.translated_title = translator.translate(article.original_title, dest="en").text
+
+
+# Article search functionality
+class ArticleSearch:
+    def __init__(self, articles):
+        self.articles = articles
+        self.model = SentenceTransformer("all-mpnet-base-v2")
+        self.article_titles = [article.translated_title for article in articles]
+        self.article_vectors = self.model.encode(self.article_titles)
+
+    def search(self, query):
+        query_vector = self.model.encode([query])
+        similarities = np.array([cosine_similarity(query_vector, vector)[0][0] for vector in self.article_vectors])
+        return similarities
+
+    def print_suggestions(self, query, k=5):
+        similarities = self.search(query)
+        suggestions = np.argsort(-similarities)[:k]
+        for idx in suggestions:
+            print(f"{similarities[idx]:.4f} : {self.articles[idx].translated_title}")
+            print(f"\t\t {self.articles[idx].article_url}")
+        print(f"Most similar article: {self.articles[suggestions[0]].translated_title}")
+
+
+# Translate test query
+def translate_test_query(test_cases):
+    for test_case in test_cases:
+        test_case.query = translator.translate(text=test_case.query, dest="en").text
+
+
+class TestCase:
+    def __init__(self, query, target):
+        self.query = query
+        self.target = target
+    
+    def get_score(self, article_search):
+        similarities = article_search.search(self.query)
+        target_idx = next((i for i, article in enumerate(article_search.articles) if self.target in article.original_title), None)
+        if target_idx is None:
+            return 0
+        most_similar_idx = np.argsort(-similarities)
+        return 1 / (np.where(most_similar_idx == target_idx)[0][0] + 1) if target_idx in most_similar_idx else 0
+
+
+# Main program
+PAGES = 1
+articles = ArticleCollectionFromUrl([f"https://www.cs.nycu.edu.tw/announcements?page={i}" for i in range(1, PAGES+1)])
+articles.fetch_articles()
+translate_articles(articles.articles)
+
+# Article search
+article_search = ArticleSearch(articles.articles)
+article_search.print_suggestions("NVIDIA 研替", k=5)
+
+# Define Test Cases (not all of them are shown)
+test_cases = [
+    TestCase("AI競賽", "AI Junior Award 2025")
+]
+
+# Evaulation
+def runtest():
+    scores = sum([test_case.get_score(article_search) for test_case in test_cases]) / len(test_cases)
+    print(f"score: {scores:.3f}")
+
+runtest()
+\end{lstlisting}

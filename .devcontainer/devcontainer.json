@@ -1,22 +1,22 @@
 {
-    "name": "LaTeX Environment",
-    "context": "..",
-    "dockerFile": "Dockerfile",
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
+    "name": "Python Development",
+    "image": "python:3.9",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
     },
-    "extensions": [
-        "mechatroner.ruby",
-        "James-Yu.latex-workshop"
-    ],
-    "postCreateCommand": "tex --version",
-    "forwardPorts": [
-        5000
-    ],
+    "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
     "features": {
         "ghcr.io/devcontainers/features/python:1": {
-            "installTools": true,
-            "version": "3.9"
+            "version": "3.9",
+            "installTools": true
         }
     }
 }
