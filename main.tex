@@ -3,6 +3,7 @@
 \usepackage{blindtext}
 \usepackage{ctex}
 \usepackage{longtable}
+\usepackage{tabularx}
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{multicol}
@@ -10,6 +11,10 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{float}
+
+\usepackage{kbordermatrix} % 需加入kbordermatrix.sty
+
+\usepackage{amsfonts}
 
 \lstset{
     breaklines=true,      % 自動換行
@@ -19,21 +24,16 @@
     xrightmargin=2em      % 右邊距
 }
 
+\renewcommand{\refname}{References}
 
-\setlength{\droptitle}{-2cm}
+\setlength{\droptitle}{-2.3cm}
 \title{Enhancing Information Retrieval Through Vector-Based Semantic Search System}
-\author{
-    SU, YU-KAI \\
-    WU, HAO-WEI \\
-    TSAI, CHUN-CHE \\
-    CHOU, CHIN-SHUO \\
-    LI, CHEUK-CHUNG \\
-}
-\date{December 25, 2024}
+\author{}
+\date{}
 
 \begin{document}
 \maketitle
-\vspace{-1cm}
+\vspace{-3.3cm}
 
 \section{Abstract}
 This report explores the application of linear algebra to enhance information retrieval systems through a vector-based semantic search model. By leveraging the Word2Vec algorithm, which converts words into high-dimensional vectors, we aim to improve search engine accuracy by understanding word relationships beyond simple keyword matching. This project integrates vector search, semantic search, and word embeddings to address issues like imprecise queries, spelling errors, and limited vocabulary. The results highlight the improvements in search results accuracy, evaluated using the Mean Reciprocal Rank (MRR) metric.
@@ -47,6 +47,8 @@ This report explores the application of linear algebra to enhance information re
 \input{sections/discussion.tex}
 
 \input{sections/conclusion.tex}
+
+\input{sections/authors.tex}
 
 \newpage
 \input{sections/reference.tex}
